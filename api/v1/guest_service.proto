@@ -1,0 +1,1258 @@
+syntax = "proto3";
+
+package guest_proto;
+option go_package = "github.com/goplaceapp/goplace-guest/api/v1;guestProto";
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+service guest {
+  rpc CreateGuest(CreateGuestRequest) returns (CreateGuestResponse);
+  rpc GetAllGuests(GetAllGuestsRequest) returns (GetAllGuestsResponse);
+  rpc GetGuestByID(GetGuestByIDRequest) returns (GetGuestByIDResponse);
+  rpc UpdateGuest(UpdateGuestRequest) returns (UpdateGuestResponse);
+  rpc AddGuestNote(AddGuestNoteRequest) returns (AddGuestNoteResponse);
+  rpc GetAllGuestFeedback(GetAllGuestFeedbackRequest)
+      returns (GetAllGuestFeedbackResponse);
+  rpc GetGuestUpcomingReservations(GetGuestUpcomingReservationsRequest)
+      returns (GetGuestUpcomingReservationsResponse);
+  rpc GetAllGuestReservations(GetAllGuestReservationsRequest)
+      returns (GetAllGuestReservationsResponse);
+  rpc GetGuestStatistics(GetGuestStatisticsRequest)
+      returns (GetGuestStatisticsResponse);
+  rpc GetGuestSpending(GetGuestSpendingRequest)
+      returns (GetGuestSpendingResponse);
+  rpc GetGuestReservationStatistics(GetGuestReservationStatisticsRequest)
+      returns (GetGuestReservationStatisticsResponse);
+  rpc UpdateGuestNote (UpdateGuestNoteRequest) returns (UpdateGuestNoteResponse);
+  rpc DeleteGuestNote (DeleteGuestNoteRequest) returns (DeleteGuestNoteResponse);
+  rpc ImportGuestsFromExcel(ImportGuestsFromExcelRequest) returns (ImportGuestsFromExcelResponse);
+  rpc AddReservationVisitors(AddReservationVisitorsRequest) returns (AddReservationVisitorsResponse);
+  rpc DeleteReservationVisitors(DeleteReservationVisitorsRequest) returns (DeleteReservationVisitorsResponse);
+}
+
+service reservation {
+  rpc CreateReservation(CreateReservationRequest)
+      returns (CreateReservationResponse);
+  rpc GetAllReservations(GetAllReservationsRequest)
+      returns (GetAllReservationsResponse);
+  rpc GetReservationByID(GetReservationByIDRequest)
+      returns (GetReservationByIDResponse);
+  rpc UpdateReservation(UpdateReservationRequest)
+      returns (UpdateReservationResponse);
+  rpc GetAvailableTimes(GetAvailableTimesRequest)
+      returns (GetAvailableTimesResponse);
+  rpc AddReservationNote(AddReservationNoteRequest)
+      returns (AddReservationNoteResponse);
+  rpc GetRealtimeReservations(GetRealtimeReservationsRequest)
+      returns (stream GetReservationByIDResponse) {}
+  rpc UpdateReservationTable(UpdateReservationTableRequest)
+      returns (UpdateReservationTableResponse);
+  rpc DeleteReservation (DeleteReservationRequest) returns (DeleteReservationResponse);
+  rpc UpdateReservationNote (UpdateReservationNoteRequest) returns (UpdateReservationNoteResponse);
+  rpc GetReservationOrderByReservationID(GetReservationOrderByReservationIDRequest) returns (GetReservationOrderByReservationIDResponse);
+  rpc DeleteReservationNote(DeleteReservationNoteRequest) returns (DeleteReservationNoteResponse);
+  rpc GetReservationsCoverFlow(GetReservationsCoverFlowRequest) returns (GetReservationsCoverFlowResponse);
+  rpc UpdateReservationFromWebhook(UpdateReservationFromWebhookRequest) returns (UpdateReservationFromWebhookResponse);
+  rpc GetAllBookedVia(google.protobuf.Empty) returns (GetAllBookedViaResponse);
+  rpc RequestReservationWebhook(RequestReservationWebhookRequest) returns (RequestReservationWebhookResponse);
+}
+
+service guestLog{
+  rpc GetAllGuestLogs(GetAllGuestLogsRequest) returns (GetAllGuestLogsResponse);
+}
+
+service reservationLog {
+  rpc GetAllReservationLogs(GetAllReservationLogsRequest) returns (GetAllReservationLogsResponse);
+  rpc GetAllReservationWaitlistLogs(GetAllReservationWaitlistLogsRequest)
+      returns (GetAllReservationWaitlistLogsResponse);
+}
+
+service reservationSpecialOccasion {
+  rpc GetAllSpecialOccasions(google.protobuf.Empty) returns (GetAllSpecialOccasionsResponse);
+  rpc GetWidgetAllSpecialOccasions(GetWidgetAllSpecialOccasionsRequest) returns (GetAllSpecialOccasionsResponse);
+}
+
+service reservationFeedback {
+  rpc CreateReservationFeedback(CreateReservationFeedbackRequest) returns (CreateReservationFeedbackResponse);
+  rpc GetAllReservationsFeedbacks(GetAllReservationsFeedbacksRequest)
+      returns (GetAllReservationsFeedbacksResponse);
+  rpc GetReservationFeedbackByID(GetReservationFeedbackByIDRequest)
+      returns (GetReservationFeedbackByIDResponse);
+  rpc UpdateReservationFeedback(UpdateReservationFeedbackRequest)
+      returns (UpdateReservationFeedbackResponse);
+  rpc GetAllReservationFeedbackSections(google.protobuf.Empty) returns (GetAllReservationsFeedbackSectionsResponse);
+}
+
+service reservationFeedbackComment {
+  rpc CreateReservationFeedbackComment(CreateReservationFeedbackCommentRequest) returns (CreateReservationFeedbackCommentResponse);
+  rpc GetAllReservationFeedbackComments(GetAllReservationFeedbackCommentsRequest) returns (GetAllReservationFeedbackCommentsResponse);
+  rpc UpdateReservationFeedbackComment(UpdateReservationFeedbackCommentRequest) returns (UpdateReservationFeedbackCommentResponse);
+  rpc AddReservationFeedbackSolution(AddReservationFeedbackSolutionRequest) returns (AddReservationFeedbackSolutionResponse);
+}
+
+service reservationWaitlist {
+  rpc GetAllWaitingReservations(GetWaitingReservationRequest)
+      returns (GetWaitingReservationsResponse);
+  rpc CreateWaitingReservation(CreateWaitingReservationRequest)
+      returns (CreateWaitingReservationResponse);
+  rpc SeatWaitingReservation(SeatWaitingReservationRequest)
+      returns (SeatWaitingReservationResponse);
+  rpc GetRealtimeWaitingReservations(GetWaitingReservationRequest)
+      returns (stream GetWaitingReservationResponse) {}
+  rpc UpdateWaitingReservationDetails(UpdateWaitingReservationDetailsRequest)
+      returns (UpdateWaitingReservationDetailsResponse);
+  rpc CreateWaitingReservationNote(CreateWaitingReservationNoteRequest) returns (CreateWaitingReservationNoteResponse);
+  rpc UpdateWaitingReservationNote(UpdateWaitingReservationNoteRequest) returns (UpdateWaitingReservationNoteResponse);
+  rpc CreateDirectInReservation(CreateWaitingReservationRequest) returns (CreateReservationResponse);
+}
+
+service reservationFeedbackWebhook {
+  rpc CreateReservationFeedbackFromWebhook(CreateReservationFeedbackFromWebhookRequest) returns (CreateReservationFeedbackFromWebhookResponse);
+}
+
+service dayOperations {
+  rpc CheckIfDayClosed(CheckIfDayClosedRequest) returns (CheckIfDayClosedResponse);
+  rpc CloseDayOperations(CloseDayOperationsRequest) returns (CloseDayOperationsResponse);
+}
+
+service reservationWidget {
+  rpc GetWidgetAvailableTimes(GetWidgetAvailableTimesRequest) returns (GetWidgetAvailableTimesResponse);
+  rpc CreateWidgetReservation(CreateWidgetReservationRequest) returns (CreateWidgetReservationResponse);
+}
+
+service payment {
+  rpc SendPaymentRequest(PaymentRequest) returns (PaymentResponse);
+  rpc GetPaymentByID (GetPaymentByIDRequest) returns (GetPaymentByIDResponse);
+  rpc GetAllReservationPayments (GetAllReservationPaymentsRequest) returns (GetAllReservationPaymentsResponse);
+  rpc UpdatePaymentFromWebhook (UpdatePaymentFromWebhookRequest) returns (UpdatePaymentFromWebhookResponse);
+  rpc CancelPayment (CancelPaymentRequest) returns (CancelPaymentResponse);
+}
+
+// Guest
+message Guest {
+  int32 id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  string language = 6;
+  google.protobuf.Timestamp birthDate = 7;
+  google.protobuf.Timestamp lastVisit = 8;
+  int32 totalVisits = 9;
+  string currentMood = 10;
+  float totalSpent = 11;
+  int32 totalNoShow = 12;
+  int32 totalCancel = 13;
+  string upcomingReservation = 14;
+  repeated GuestBranchVisits branches = 15;
+  repeated Tag tags = 16;
+  repeated GuestNote notes = 17;
+  string address = 18;
+  string gender = 19;
+  google.protobuf.Timestamp createdAt = 20;
+  google.protobuf.Timestamp updatedAt = 21;
+}
+
+message GuestShort{
+  int32 id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string phoneNumber = 4;
+}
+
+message GuestParams {
+  int32 id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  string language = 6;
+  string birthDate = 7;
+  repeated TagParams tags = 8;
+  bool emptyEmail = 9;
+  bool emptyLanguage = 10;
+  bool emptyBirthdate = 11;
+  bool emptyTags = 12;
+  string address = 13;
+  string gender = 14;
+}
+
+message Tag {
+  int32 id = 1;
+  string name = 2;
+  TagCategory category = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  google.protobuf.Timestamp updatedAt = 5;
+}
+
+message TagParams {
+  int32 id = 1;
+  int32 categoryId = 2;
+}
+
+message TagCategory {
+  int32 id = 1;
+  string name = 2;
+  string color = 3;
+  string classification = 4;
+  int32 orderIndex = 5;
+  repeated Tag tags = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  google.protobuf.Timestamp updatedAt = 8;
+}
+
+message TagCategoryParams {
+  int32 id = 1;
+  string name = 2;
+  string color = 3;
+  string classification = 4;
+  int32 orderIndex = 5;
+}
+
+message GuestBranchVisits {
+  string branchName = 1;
+  int32 visits = 2;
+}
+
+message GuestNoteParams {
+  int32 id = 1;
+  int32 guestId = 2;
+  string description = 3;
+}
+
+message GuestNote {
+  int32 id = 1;
+  int32 guestId = 2;
+  string description = 3;
+  CreatorProfile creator = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
+}
+
+message CreateGuestRequest {GuestParams params = 1;}
+
+message CreateGuestResponse {Guest result = 1;}
+
+message GetAllGuestsRequest {
+  string query = 1;
+  PaginationParams paginationParams = 2;
+}
+
+message GetAllGuestsResponse {
+  Pagination pagination = 1;
+  repeated Guest result = 2;
+}
+
+message GetGuestByIDRequest {int32 id = 1;}
+
+message GetGuestByIDResponse {Guest result = 1;}
+
+message UpdateGuestRequest {GuestParams params = 1;}
+
+message UpdateGuestResponse {Guest result = 1;}
+
+message AddGuestNoteRequest {
+  GuestNoteParams params = 1;
+}
+
+message AddGuestNoteResponse {GuestNote result = 1;}
+
+message GetAllGuestFeedbackRequest {int32 guestId = 1;}
+
+message GetAllGuestFeedbackResponse {repeated ReservationFeedback result = 1;}
+
+message GetGuestUpcomingReservationsRequest {int32 guestId = 1;}
+
+message GetGuestUpcomingReservationsResponse {repeated Reservation result = 1;}
+
+message CreatorProfile {
+  int32 id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string email = 4;
+  string phoneNumber = 5;
+  string avatar = 6;
+  string role = 7;
+}
+
+message GetAllGuestReservationsRequest {
+  int32 guestId = 1;
+  PaginationParams params = 2;
+}
+
+message GetAllGuestReservationsResponse {
+  Pagination pagination = 1;
+  repeated Reservation result = 2;
+}
+
+message ReservationGuest{
+  int32 id = 1;
+  string firstName = 2;
+  string lastName = 3;
+  string phoneNumber = 4;
+  int32 totalVisits = 5;
+  float totalSpent = 6;
+  int32 totalNoShow = 7;
+  int32 totalCancel = 8;
+  bool isPrimary = 9;
+  GuestNote note = 10;
+  string gender = 11;
+  repeated Tag tags = 12;
+}
+
+message ReservationBranch {
+  int32 id = 1;
+  string name = 2;
+}
+
+message ReservationShift {
+  int32 id = 1;
+  string name = 2;
+}
+
+message ReservationPayment{
+  string status = 1;
+  int32 totalPaid = 2;
+  int32 totalUnPaid = 3;
+}
+
+// Reservation
+message Reservation {
+  int32 id = 1;
+  repeated ReservationGuest guests = 2;
+  ReservationBranch branch = 3;
+  ReservationShift shift = 4;
+  repeated Table tables = 5;
+  int32 guestsNumber = 6;
+  int32 seatedGuests = 7;
+  google.protobuf.Timestamp date = 8;
+  google.protobuf.Timestamp time = 9;
+  string reservedVia = 10;
+  google.protobuf.Timestamp checkIn = 11;
+  ReservationStatus status = 12;
+  ReservationSpecialOccasion specialOccasion = 13;
+  repeated Tag tags = 14;
+  ReservationNote note = 15;
+  ReservationFeedbackShort feedback = 17;
+  google.protobuf.Timestamp checkOut = 18;
+  CreatorProfile creator = 19;
+  float totalSpent = 20;
+  float creationDuration = 21;
+  ReservationPayment payment = 22;
+  string reservationRef = 23;
+  google.protobuf.Timestamp createdAt = 24;
+  google.protobuf.Timestamp updatedAt = 25;
+}
+
+message ReservationShort {
+  int32 id = 1;
+  Branch branch = 2;
+  int32 guestsNumber = 3;
+  int32 seatedGuests = 4;
+  google.protobuf.Timestamp date = 5;
+  google.protobuf.Timestamp time = 6;
+  string reservedVia = 7;
+  google.protobuf.Timestamp checkIn = 8;
+  ReservationStatus status = 9;
+  ReservationSpecialOccasion specialOccasion = 10;
+  repeated Table tables = 11;
+  google.protobuf.Timestamp checkOut = 12;
+  google.protobuf.Timestamp createdAt = 13;
+  google.protobuf.Timestamp updatedAt = 14;
+}
+
+message ReservationParams {
+  int32 id = 1;
+  int32 guestId = 2;
+  int32 branchId = 3;
+  int32 seatingAreaId = 4;
+  int32 shiftId = 5;
+  int32 statusId = 6;
+  int32 guestsNumber = 7;
+  int32 seatedGuests = 8;
+  string date = 9;
+  string time = 10;
+  float creationDuration = 11;
+  string reservedVia = 12;
+  int32 specialOccasionId = 13;
+  repeated TagParams tags = 14;
+  bool deleteSpecialOccasion = 15;
+  bool emptyTags = 16;
+  string pinCode = 17;
+}
+
+message ReservationOrder {
+  int32 id = 1;
+  repeated ReservationOrderItem items = 2;
+  float discountAmount = 3;
+  string discountReason = 4;
+  float prevailingTax = 5;
+  float tax = 6;
+  float subTotal = 7;
+  float finalTotal = 8;
+  google.protobuf.Timestamp createdAt = 9;
+  google.protobuf.Timestamp updatedAt = 10;
+}
+
+message ReservationOrderItem {
+  int32 id = 1;
+  string itemName = 2;
+  float cost = 3;
+  int32 quantity = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
+}
+
+message CreateReservationRequest {ReservationParams params = 1;}
+
+message CreateReservationResponse {Reservation result = 1;}
+
+message GetAllReservationsRequest {
+  string query = 1;
+  repeated int32 statusIds = 2;
+  repeated int32 tableIds = 3;
+  int32 shiftId = 4;
+  int32 branchId = 5;
+  string date = 6;
+  PaginationParams paginationParams = 7;
+}
+
+message GetAllReservationsResponse {
+  Pagination pagination = 1;
+  repeated Reservation result = 2;
+}
+
+message GetReservationByIDRequest {int32 id = 1;}
+
+message GetReservationByIDResponse {Reservation result = 1;}
+
+message UpdateReservationRequest {ReservationParams params = 1;}
+
+message UpdateReservationResponse {Reservation result = 1;}
+
+message ReservationStatus {
+  int32 id = 1;
+  string name = 2;
+  string category = 3;
+  string type = 4;
+  string color = 5;
+  string icon = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  google.protobuf.Timestamp updatedAt = 8;
+}
+
+message Table {
+  int32 id = 1;
+  string tableNumber = 2;
+  int32 posNumber = 3;
+  int32 minPartySize = 4;
+  int32 maxPartySize = 5;
+  SeatingArea seatingArea = 6;
+  google.protobuf.Timestamp createdAt = 7;
+  google.protobuf.Timestamp updatedAt = 8;
+}
+
+message SeatingArea {
+  int32 id = 1;
+  string name = 2;
+  int32 branchId = 3;
+}
+
+message Shift {
+  int32 id = 1;
+  string name = 3;
+  google.protobuf.Timestamp from = 4;
+  google.protobuf.Timestamp to = 5;
+  google.protobuf.Timestamp startDate = 6;
+  google.protobuf.Timestamp endDate = 7;
+  int32 timeInterval = 8;
+  FloorPlan floorPlan = 9;
+  repeated SeatingArea seatingAreas = 10;
+  int32 categoryId = 11;
+  int32 minGuests = 12;
+  int32 maxGuests = 13;
+  repeated string daysToRepeat = 14;
+  google.protobuf.Timestamp createdAt = 15;
+  google.protobuf.Timestamp updatedAt = 16;
+}
+
+message FloorPlan {
+  int32 id = 1;
+  string name = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  google.protobuf.Timestamp updatedAt = 4;
+}
+
+message Cast {
+  int32 id = 1;
+  repeated Staff staff = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  google.protobuf.Timestamp updatedAt = 4;
+}
+
+message Staff {
+  int32 id = 1;
+  int32 cast_id = 2;
+  string name = 3;
+  string role = 4;
+  string phoneNumber = 5;
+  google.protobuf.Timestamp createdAt = 6;
+  google.protobuf.Timestamp updatedAt = 7;
+}
+
+message Branch {
+  int32 id = 1;
+  string name = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  google.protobuf.Timestamp updatedAt = 4;
+}
+
+message FeedbackSection{
+  int32 id = 1;
+  string name = 2;
+  google.protobuf.Timestamp createdAt = 3;
+  google.protobuf.Timestamp updatedAt = 4;
+}
+
+message ReservationFeedbackShort {
+  int32 id = 1;
+  int32 rate = 2;
+  string description = 3;
+  google.protobuf.Timestamp createdAt = 4;
+}
+
+message ReservationFeedback {
+  int32 id = 1;
+  GuestShort guest = 2;
+  ReservationShort reservation = 3;
+  string status = 4;
+  ReservationFeedbackSolution solution = 5;
+  repeated FeedbackSection sections = 6;
+  int32 rate = 7;
+  string description = 8;
+  google.protobuf.Timestamp createdAt = 9;
+  google.protobuf.Timestamp updatedAt = 10;
+}
+
+message ReservationFeedbackParams {
+  int32 id = 1;
+  int32 reservationId = 2;
+  int32 status = 3;
+  repeated int32 sectionIds = 4;
+  int32 rate = 5;
+  string description = 6;
+  bool emptySections = 7;
+}
+
+message ReservationSpecialOccasion {
+  int32 id = 1;
+  string name = 2;
+  string color = 3;
+  string icon = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
+}
+
+message GetAvailableTimesRequest {
+  int32 branchId = 1;
+  int32 shiftId = 2;
+  string date = 3;
+  int32 partySize = 4;
+  int32 seatingAreaId = 5;
+}
+
+message GetAvailableTimesResponse {repeated AvailableTime availableTimes = 1;}
+
+message GetWidgetAvailableTimesRequest {
+  int32 branchId = 1;
+  string fromDate = 2;
+  string toDate = 3;
+  int32 partySize = 4;
+  int32 seatingAreaId = 5;
+}
+
+message GetWidgetAvailableTimesResponse {
+  repeated AvailableTime availableTimes = 1;
+  string date = 2;
+}
+
+message AvailableTime {
+  google.protobuf.Timestamp time = 1;
+  int32 pacing = 2;
+  int32 capacity = 3;
+  bool available = 4;
+}
+
+message ReservationNoteParams {
+  int32 id = 1;
+  int32 reservationId = 2;
+  string description = 3;
+}
+
+message ReservationNote {
+  int32 id = 1;
+  string description = 2;
+  CreatorProfile creator = 3;
+  Reservation reservation = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
+}
+
+message AddReservationNoteRequest {ReservationNoteParams params = 1;}
+
+message AddReservationNoteResponse {ReservationNote result = 1;}
+
+// Pagination
+message Pagination {
+  int32 total = 1;
+  int32 perPage = 2;
+  int32 currentPage = 3;
+  int32 lastPage = 4;
+  int32 from = 5;
+  int32 to = 6;
+}
+
+message PaginationParams {
+  int32 perPage = 1;
+  int32 currentPage = 2;
+}
+
+// Logs
+message ReservationLog {
+  int32 id = 1;
+  int32 reservationId = 2;
+  CreatorProfile creator = 3;
+  string madeBy = 4;
+  string fieldName = 5;
+  string oldValue = 6;
+  string newValue = 7;
+  string action = 8;
+  google.protobuf.Timestamp createdAt = 9;
+  google.protobuf.Timestamp updatedAt = 10;
+}
+
+message ReservationLogParams {
+  int32 id = 1;
+  int32 reservationId = 2;
+  string fieldName = 3;
+  string oldValue = 4;
+  string newValue = 5;
+  string action = 6;
+}
+
+message GuestLog {
+  int32 id = 1;
+  int32 guestId = 2;
+  CreatorProfile creator = 3;
+  string madeBy = 4;
+  string fieldName = 5;
+  string oldValue = 6;
+  string newValue = 7;
+  string action = 8;
+  google.protobuf.Timestamp createdAt = 9;
+  google.protobuf.Timestamp updatedAt = 10;
+}
+
+message GuestLogParams {
+  int32 id = 1;
+  int32 guestId = 2;
+  string fieldName = 3;
+  string oldValue = 4;
+  string newValue = 5;
+  string action = 6;
+}
+
+message GetAllReservationLogsRequest {int32 reservationId = 1;}
+
+message GetAllReservationLogsResponse {repeated ReservationLog result = 1;}
+
+message GetAllGuestLogsRequest {int32 guestId = 1;}
+
+message GetAllGuestLogsResponse {repeated GuestLog result = 1;}
+
+message GetRealtimeReservationsRequest {
+  int32 shiftId = 1;
+  string date = 2;
+}
+
+message UpdateReservationTableRequest {
+  int32 reservationId = 1;
+  repeated int32 tables = 2;
+}
+
+message UpdateReservationTableResponse {Reservation result = 1;}
+
+message ReservationWaitlist {
+  int32 id = 1;
+  Guest guest = 2;
+  Shift shift = 3;
+  SeatingArea seatingArea = 4;
+  int32 guestsNumber = 5;
+  int32 waitingTime = 6;
+  ReservationWaitlistNote note = 7;
+  repeated Tag tags = 8;
+  string date = 9;
+  int32 branchId = 10;
+  google.protobuf.Timestamp createdAt = 11;
+  google.protobuf.Timestamp updatedAt = 12;
+}
+
+message ReservationWaitlistParams {
+  int32 id = 1;
+  int32 guestId = 2;
+  int32 shiftId = 3;
+  int32 seatingAreaId = 4;
+  int32 guestsNumber = 5;
+  int32 waitingTime = 6;
+  repeated TagParams tags = 7;
+  int32 noteId = 8;
+  bool deleteTags = 9;
+  string type = 10;
+  string date = 11;
+}
+
+message CreateWaitingReservationRequest {
+  ReservationWaitlistParams params = 1;
+}
+
+message CreateWaitingReservationResponse {ReservationWaitlist result = 1;}
+
+message GetWaitingReservationsResponse {
+  repeated ReservationWaitlist result = 1;
+}
+
+message SeatWaitingReservationRequest {
+  int32 id = 1;
+  int32 status = 2;
+  repeated int32 tables = 3;
+  string type = 4;
+  int32 creatorId = 5;
+}
+
+message GetWaitingReservationRequest {
+  int32 shiftId = 1;
+  string date = 2;
+}
+
+message GetWaitingReservationResponse {
+  ReservationWaitlist result = 1;
+}
+
+message SeatWaitingReservationResponse {Reservation result = 1;}
+
+message ReservationStatusCount {
+  string name = 1;
+  int32 count = 2;
+}
+
+message GuestStatistics {
+  int32 totalReservations = 1;
+  float totalSpent = 2;
+  string publicSatisfaction = 3;
+}
+
+message GetGuestStatisticsRequest {int32 guestId = 1;}
+
+message GetGuestStatisticsResponse {GuestStatistics result = 1;}
+
+message MonthSpending {
+  string month = 1;
+  float totalSpent = 2;
+}
+
+message YearSpending {
+  int32 year = 1;
+  repeated MonthSpending months = 2;
+}
+
+message GetGuestSpendingRequest {int32 guestId = 1;}
+
+message GetGuestSpendingResponse {repeated YearSpending result = 1;}
+
+message GetGuestReservationStatisticsRequest {
+  int32 guestId = 1;
+  string fromDate = 2;
+  string toDate = 3;
+  string queryType = 4;
+}
+
+message GuestReservationStatistics {
+  string name = 1;
+  int32 value = 2;
+}
+
+message GetGuestReservationStatisticsResponse {
+  repeated GuestReservationStatistics result = 1;
+}
+
+message SpecialOccasion{
+  int32 id = 1;
+  string name = 2;
+  string color = 3;
+  string icon = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
+}
+
+message GetAllSpecialOccasionsResponse {
+  repeated SpecialOccasion result = 1;
+}
+
+message CreateReservationFeedbackRequest{
+  ReservationFeedbackParams params = 1;
+}
+
+message CreateReservationFeedbackResponse{
+  ReservationFeedback result = 1;
+}
+
+message GetAllReservationsFeedbacksRequest{
+  PaginationParams paginationParams = 1;
+  string query = 2;
+  string fromDate = 3;
+  string toDate = 4;
+  repeated int32 branchIds = 5;
+  repeated int32 statusIds = 6;
+  repeated string rate = 7;
+}
+
+message GetAllReservationsFeedbacksResponse{
+  Pagination pagination = 1;
+  repeated ReservationFeedback result = 2;
+  int32 totalPositive = 3;
+  int32 totalNegative = 4;
+  int32 totalPending = 5;
+  int32 totalSolved = 6;
+}
+
+message GetReservationFeedbackByIDRequest{
+  int32 feedbackId = 1;
+  int32 reservationId = 2;
+}
+
+message GetReservationFeedbackByIDResponse{
+  ReservationFeedback result = 1;
+}
+
+message UpdateReservationFeedbackRequest{
+  ReservationFeedbackParams params = 1;
+}
+
+message UpdateReservationFeedbackResponse{
+  ReservationFeedback result = 1;
+}
+
+message GetAllReservationsFeedbackSectionsResponse {
+  repeated FeedbackSection result = 1;
+}
+
+message ReservationFeedbackCommentParams{
+  int32 id = 1;
+  string comment = 2;
+  int32 reservationFeedbackId = 3;
+}
+
+message ReservationFeedbackComment{
+  int32 id = 1;
+  CreatorProfile creator = 2;
+  string comment = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  google.protobuf.Timestamp updatedAt = 5;
+}
+
+message CreateReservationFeedbackCommentRequest {
+  ReservationFeedbackCommentParams params = 1;
+}
+
+message CreateReservationFeedbackCommentResponse {
+  ReservationFeedbackComment result = 1;
+}
+
+message GetAllReservationFeedbackCommentsRequest {
+  int32 reservationFeedbackId = 1;
+}
+
+message GetAllReservationFeedbackCommentsResponse {
+  repeated ReservationFeedbackComment result = 1;
+}
+
+message GetReservationFeedbackCommentByIDRequest {
+  int32 reservationFeedbackId = 1;
+  int32 commentId = 2;
+}
+
+message GetReservationFeedbackCommentByIDResponse {
+  ReservationFeedbackComment result = 1;
+}
+
+message UpdateReservationFeedbackCommentRequest {
+  ReservationFeedbackCommentParams params = 1;
+}
+
+message UpdateReservationFeedbackCommentResponse {
+  ReservationFeedbackComment result = 1;
+}
+
+message ReservationFeedbackSolution{
+  int32 id = 1;
+  CreatorProfile creator = 2;
+  string solution = 3;
+  google.protobuf.Timestamp createdAt = 4;
+  google.protobuf.Timestamp updatedAt = 5;
+}
+
+message ReservationFeedbackSolutionParams{
+  int32 feedbackId = 1;
+  string solution = 2;
+}
+
+message AddReservationFeedbackSolutionRequest{
+  ReservationFeedbackSolutionParams params = 1;
+}
+
+message AddReservationFeedbackSolutionResponse{
+  ReservationFeedbackSolution result = 1;
+}
+
+message CreateReservationFeedbackFromWebhookRequest{
+  int32 rate = 1;
+  string feedback = 2;
+  int32 reservationId = 3;
+}
+
+message CreateReservationFeedbackFromWebhookResponse{
+  int32 code = 1;
+  string message = 2;
+}
+
+message UpdateReservationFromWebhookRequest{
+  int32 reservationId = 1;
+  string status = 2;
+}
+
+message UpdateReservationFromWebhookResponse{
+  int32 code = 1;
+  string message = 2;
+}
+
+message CheckIfDayClosedRequest{
+  string date = 1;
+}
+
+message CheckIfDayClosedResponse{
+  bool closed = 1;
+}
+
+message CloseDayOperationsRequest{
+  string date = 1;
+  string pinCode = 2;
+}
+
+message CloseDayOperationsResponse{
+  int32 code = 1;
+  string message = 2;
+}
+
+message DeleteReservationRequest {
+  int32 id = 1;
+}
+
+message DeleteReservationResponse {
+  Reservation result = 1;
+}
+
+message UpdateReservationNoteRequest {
+  ReservationNoteParams params = 1;
+}
+
+message UpdateReservationNoteResponse {
+  ReservationNote result = 1;
+}
+
+message UpdateGuestNoteRequest {
+  GuestNoteParams params = 1;
+}
+
+message UpdateGuestNoteResponse {
+  GuestNote result = 1;
+}
+
+message CreateWaitingReservationNoteRequest {
+  int32 reservationWaitlistId = 1;
+  string description = 2;
+}
+
+message ReservationWaitlistNote {
+  int32 id = 1;
+  int32 reservationWaitlistId = 2;
+  string description = 3;
+  CreatorProfile creator = 4;
+  google.protobuf.Timestamp createdAt = 5;
+  google.protobuf.Timestamp updatedAt = 6;
+}
+
+message CreateWaitingReservationNoteResponse {
+  ReservationWaitlistNote result = 1;
+}
+
+message UpdateWaitingReservationDetailsRequest {
+  ReservationWaitlistParams params = 1;
+}
+
+message UpdateWaitingReservationDetailsResponse {
+  ReservationWaitlist result = 1;
+}
+
+message UpdateWaitingReservationNoteRequest{
+  int32 id = 1;
+  string description = 2;
+}
+
+message UpdateWaitingReservationNoteResponse{
+  ReservationWaitlistNote result = 1;
+}
+
+message ReservationWaitlistLog {
+  int32 id = 1;
+  int32 reservationWaitlistId = 2;
+  CreatorProfile creator = 3;
+  string madeBy = 4;
+  string fieldName = 5;
+  string oldValue = 6;
+  string newValue = 7;
+  string action = 8;
+  google.protobuf.Timestamp createdAt = 9;
+  google.protobuf.Timestamp updatedAt = 10;
+}
+
+message GetAllReservationWaitlistLogsRequest {int32 reservationWaitlistId = 1;}
+
+message GetAllReservationWaitlistLogsResponse {repeated ReservationWaitlistLog result = 1;}
+
+message GetReservationOrderByReservationIDRequest {
+  int32 reservationId = 1;
+}
+
+message GetReservationOrderByReservationIDResponse {
+  ReservationOrder result = 1;
+}
+
+message GetReservationsCoverFlowRequest{
+  int32 shiftId = 1;
+  string date = 2;
+  repeated int32 seatingArea = 3;
+}
+
+message GetReservationsCoverFlowResponse{
+  repeated CoverFlow result = 1;
+}
+
+message CoverFlow{
+  string time = 1;
+  repeated CoverFlowReservation reservations = 2;
+}
+
+message CoverFlowReservation{
+  int32 id = 1;
+  int32 guestsNumber = 2;
+  CoverFlowReservationStatus status = 3;
+}
+
+message CoverFlowReservationStatus{
+  int32 id = 1;
+  string name = 2;
+  string color = 3;
+  string icon = 4;
+}
+
+message ImportGuestsFromExcelRequest {
+  string filePath = 1;
+}
+
+message ImportGuestsFromExcelResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message DeleteGuestNoteRequest {
+  int32 id = 1;
+  int32 guestId = 2;
+}
+
+message DeleteGuestNoteResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message DeleteReservationNoteRequest {
+  int32 id = 1;
+  int32 reservationId = 2;
+}
+
+message DeleteReservationNoteResponse {
+  int32 code = 1;
+  string message = 2;
+  Reservation reservation = 3;
+}
+
+message WidgetGuestParams {
+  string firstName = 1;
+  string lastName = 2;
+  string email = 3;
+  string phoneNumber = 4;
+  string language = 5;
+  string birthDate = 6;
+  bool primary = 7;
+}
+
+message CreateWidgetReservationRequest{
+  repeated WidgetGuestParams guests = 1;
+  int32 branchId = 2;
+  int32 seatingAreaId = 3;
+  int32 guestsNumber = 4;
+  string date = 5;
+  string time = 6;
+  string reservedVia = 7;
+  int32 specialOccasionId = 8;
+  string note = 9;
+}
+
+message CreateWidgetReservationResponse{
+  int32 code = 1;
+  string message = 2;
+}
+
+message GetWidgetAllSpecialOccasionsRequest{
+  int32 branchId = 1;
+}
+
+message GetAllBookedViaResponse {
+  repeated string result = 1;
+}
+
+message PaymentRequest {
+  int32 reservationId = 1;
+  repeated PaymentItem items = 2;
+  string delivery = 3;
+  string contacts = 4;
+}
+
+message PaymentGuest {
+  string firstName = 1;
+  string lastName = 2;
+  string phoneNumber = 3;
+  string address = 4;
+}
+
+message PaymentResponse {
+  int32 id = 1;
+  PaymentBranch branch = 2;
+  PaymentGuest guest = 3;
+  Invoice invoice = 4;
+  PaymentCard card = 5;
+  string status = 8;
+  int32 contacts = 9;
+  repeated string delivery = 10;
+}
+
+message PaymentCard {
+  string lastFourDigits = 1;
+  string cardType = 2;
+  string cardExpireDate = 3;
+}
+
+message PaymentBranch {
+  string name = 1;
+  string address = 2;
+  float vatPercent = 3;
+  float serviceCharge = 4;
+  string crNumber = 5;
+  string vatRegNumber = 6;
+}
+
+message Invoice {
+  string invoiceId = 1;
+  string invoiceRef = 2;
+  string date = 3;
+  string waiter = 4;
+  repeated PaymentItem items = 5;
+  float subTotal = 6;
+}
+
+message PaymentItem {
+  int32 id = 1;
+  string name = 2;
+  float price = 3;
+  int32 quantity = 4;
+}
+
+message GetPaymentByIDRequest {
+  int32 id = 1;
+  int32 reservationId = 2;
+}
+
+message GetPaymentByIDResponse {
+  PaymentResponse result = 1;
+}
+
+message GetAllReservationPaymentsRequest {
+  int32 id = 1;
+}
+
+message GetAllReservationPaymentsResponse {
+  repeated PaymentResponse result = 1;
+}
+
+message RequestReservationWebhookRequest {
+  string phoneNumber = 1;
+}
+
+message RequestReservationWebhookResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message CardInfo {
+  string fourDigits = 1;
+  string brand = 2;
+}
+
+message UpdatePaymentFromWebhookRequest{
+  string invoiceId = 1;
+  CardInfo card = 2;
+  string status = 3;
+}
+
+message UpdatePaymentFromWebhookResponse{
+  int32 code = 1;
+  string message = 2;
+}
+
+message AddReservationVisitorsRequest {
+  repeated int32 visitorIds = 1;
+  int32 reservationId = 2;
+}
+
+message AddReservationVisitorsResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message DeleteReservationVisitorsRequest {
+  repeated int32 visitorIds = 1;
+  int32 reservationId = 2;
+}
+
+message DeleteReservationVisitorsResponse {
+  int32 code = 1;
+  string message = 2;
+}
+
+message CancelPaymentRequest{
+  int32 invoiceId = 1;
+}
+
+message CancelPaymentResponse{
+  int32 code = 1;
+  string message = 2;
+}

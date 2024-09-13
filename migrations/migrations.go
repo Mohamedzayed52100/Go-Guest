@@ -1,0 +1,60 @@
+package migrations
+
+import (
+	"github.com/goplaceapp/goplace-common/pkg/dbhelper"
+	migrations "github.com/goplaceapp/goplace-guest/migrations/tenant"
+)
+
+var SharedMigrations = []dbhelper.SqlxMigration{}
+
+var TenantMigrations = []dbhelper.SqlxMigration{
+	migrations.CreateGuestsTable(),
+	migrations.CreateSpecialOccasionsTable(),
+	migrations.CreateReservationNotesTable(),
+	migrations.CreateReservationsTable(),
+	migrations.CreateReservationVisitorsTable(),
+	migrations.CreateReservationTablesTable(),
+	migrations.CreateReservationFeedbacksTable(),
+	migrations.CreateReservationLogsTable(),
+	migrations.CreateReservationOrdersTable(),
+	migrations.CreateGuestLogsTable(),
+	migrations.CreateGuestLogsTable(),
+	migrations.CreateGuestNotesTable(),
+	migrations.CreateReservationWaitlistNotesTable(),
+	migrations.CreateReservationWaitlistsTable(),
+	migrations.CreateReservationWaitlistLogsTable(),
+	migrations.CreateReservationFeedbackSectionsTable(),
+	migrations.CreateReservationFeedbackSectionAssignmentsTable(),
+	migrations.CreateReservationFeedbackCommentsTable(),
+	migrations.CreateReservationFeedbackSolutionsTable(),
+	migrations.AlterReservationsDropNoteId(),
+	migrations.AlterReservationNotesAddReservationId(),
+	migrations.AlterReservationsAddDateIndex(),
+	migrations.AlterReservationWaitlistsAddBranchId(),
+	migrations.AlterReservationsAddDeletedAt(),
+	migrations.AlterReservationWaitlistsAddCreatorId(),
+	migrations.AlterReservationWaitlistsDropNoteId(),
+	migrations.AlterOrdersTable(),
+	migrations.CreateReservationOrderItemsTable(),
+	migrations.AlterReservationsDropReservationGuestUkey(),
+	migrations.AlterReservationOrdersAddOrderId(),
+	migrations.AlterSpecialOccasionsAddBranchId(),
+	migrations.AlterSpecialOccasionsModifyUkey(),
+	migrations.AlterReservationsTableChangeTimeType(),
+	migrations.AlterGuestsTableAddDeletedAt(),
+	migrations.CreateClientWaTemplatesTable(),
+	migrations.AlterReservationWaitlistsAddDate(),
+	migrations.AlterReservationTablesAddIndex(),
+	migrations.AlterTurnoverTableAddIndex(),
+	migrations.AlterReservationWaitlistsTable(),
+	migrations.AlterReservationWaitlistsTableAddConstraint(),
+	migrations.CreatePaymentRequestsTable(),
+	migrations.CreateInvoicesTable(),
+	migrations.CreatePaymentItemAssignmentsTable(),
+	migrations.AlterGuestsAddAddress(),
+	migrations.AlterInvoicesTableRenameCardNumberColumn(),
+	migrations.CreatePaymentRequestContactsTable(),
+	migrations.AlterReservationsAddRef(),
+	migrations.AlterPaymentRequests(),
+	migrations.AlterGuestsAddGender(),
+}

@@ -1,0 +1,25 @@
+FROM golang:alpine
+
+# Set the working directory
+WORKDIR /app
+ARG GITHUB_ACCESS_TOKEN
+
+# Install necessary packages
+RUN apk update && \
+    apk add --no-cache git bash ca-certificates libc6-compat
+
+# Copy the Go module files and download dependencies
+COPY go.mod go.sum ./
+RUN git config --global url."https://${GITHUB_ACCESS_TOKEN}:@github.com/".insteadOf "https://github.com/" && go mod download
+
+# Copy the entire source code into the container
+COPY . .
+
+# Install air for live reloading
+RUN go install github.com/air-verse/air@latest
+
+# Expose the port if your application listens on a specific port
+EXPOSE 50051
+
+# Command to run the application
+CMD ["air", "-c", ".air.toml"]

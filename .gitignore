@@ -1,0 +1,14 @@
+# IDEs
+/.idea
+/.vscode
+
+# Execulde generate protobuf files
+#/pkg/proto/*.pb.go
+
+/main
+
+# Secret management
+.env
+
+# tmp folder
+/tmp
